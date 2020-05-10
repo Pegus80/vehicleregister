@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright (c) 2020 Dimitrijs Fedotovs
+  ~ This code is licensed under MIT license
+  ~ (see LICENSE.txt for details)
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/main.xhtml">
+    <ui:define name="content">
+
+        <h:form>
+            <h:panelGrid columns="2" cellpadding="5">
+
+                <p:outputLabel value="Ritekļu kategorijas:" for="dropDown"/>
+
+
+                <p:autoComplete id="dropDown" dropdown="true"
+                                value="#{vehicleModelBean.selectedVehicleModel}"
+                                converter="lv.vda.register.converter"
+                                completeMethod="#{vehicleModelBean.getVehicleModelList}"
+                                var="vehicleModel"
+                                itemLabel="#{vehicleModel.modelName}"
+                                itemValue="#{vehicleModel}"/>
+
+                <p:commandButton value="Submit" icon="pi pi-check"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+
+    </ui:define>
+</ui:composition>
+
+</html>
