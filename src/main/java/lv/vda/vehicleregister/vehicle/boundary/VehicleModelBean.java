@@ -38,8 +38,6 @@ public class VehicleModelBean implements Serializable {
 
 
     public void setSelectedVehicleModel(VehicleModelEntity selectedVehicleModel) {
-
-        System.out.println("Selected model name is: "+ selectedVehicleModel.getModelName());
         this.selectedVehicleModel = selectedVehicleModel;
     }
 
@@ -50,6 +48,11 @@ public class VehicleModelBean implements Serializable {
 
     public VehicleModelEntity LoadVehicleModelByID (Long id) {
         return vehicleDAO.selectVehicleModelByID(id);
+    }
+
+    public void onItemSelect(SelectEvent event) {
+        var selectedVehicleModel = (VehicleModelEntity) event.getObject();
+        PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:","Selected model is " + selectedVehicleModel.getModelName());
     }
 
 

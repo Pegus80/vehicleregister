@@ -17,18 +17,23 @@
 
                 <p:outputLabel value="Ritekļu kategorijas:" for="dropDown"/>
 
-
                 <p:autoComplete id="dropDown" dropdown="true"
                                 value="#{vehicleModelBean.selectedVehicleModel}"
                                 converter="lv.vda.register.converter"
                                 completeMethod="#{vehicleModelBean.getVehicleModelList}"
                                 var="vehicleModel"
                                 itemLabel="#{vehicleModel.modelName}"
-                                itemValue="#{vehicleModel}"/>
+                                itemValue="#{vehicleModel}">
 
-                <p:commandButton value="Submit" icon="pi pi-check"/>
+                    <p:ajax event="itemSelect" listener="#{vehicleModelBean.onItemSelect}" />
+
+                </p:autoComplete>
 
             </h:panelGrid>
+
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
 
         </h:form>
 
