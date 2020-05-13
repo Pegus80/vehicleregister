@@ -7,31 +7,67 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <ui:composition template="/templates/main.xhtml">
     <ui:define name="content">
 
         <h:form>
+
             <h:panelGrid columns="2" cellpadding="5">
 
-                <p:outputLabel value="Ritekļu kategorijas:" for="dropDown"/>
+                <p:outputLabel for="sol" value="Ritekļu medeļi:"/>
+                <p:selectOneListbox id="sol" value="#{vehicleModelBean.selectedVehicleModel}"
+                                    converter="lv.vda.register.modelConverter" var="vm"
+                                    filter="true" filterMatchMode="contains">
 
-                <p:autoComplete id="dropDown" dropdown="true"
-                                value="#{vehicleModelBean.selectedVehicleModel}"
-                                converter="lv.vda.register.converter"
-                                completeMethod="#{vehicleModelBean.getVehicleModelList}"
-                                var="vehicleModel"
-                                itemLabel="#{vehicleModel.modelName}"
-                                itemValue="#{vehicleModel}">
+                    <f:selectItems value="#{vehicleModelBean.vehicleModelList}"
+                                   var="vm2"
+                                   itemLabel="#{vm2.modelName}"
+                                   itemValue="#{vm2}"/>
+                    <p:column>
+                        <h:outputText value="#{vm.modelName}"/>
+                    </p:column>
 
-                    <p:ajax event="itemSelect" listener="#{vehicleModelBean.onItemSelect}" />
+                    <p:ajax event="change" update="sol2" />
 
-                </p:autoComplete>
+                </p:selectOneListbox>
+
+                <p:outputLabel for="sol2" value="Ritekļu medeļi2:"/>
+                <p:selectOneListbox id="sol2" value="#{vehicleModelBean.selectedVehicleModel}"
+                                    converter="lv.vda.register.modelConverter" var="vm"
+                                    filter="true" filterMatchMode="contains">
+
+                    <f:selectItems value="#{vehicleModelBean.vehicleModelList}"
+                                   var="vm2"
+                                   itemLabel="#{vm2.modelName}"
+                                   itemValue="#{vm2}"/>
+                    <p:column>
+                        <h:outputText value="#{vm.modelName}"/>
+                    </p:column>
+
+                </p:selectOneListbox>
+
+
+
+<!--                <p:outputLabel for="ac" value="Ritekļu kategorijas:"/>-->
+<!--                <p:autoComplete id="ac" dropdown="true"-->
+<!--                                value="#{vehicleModelBean.selectedVehicleModel}"-->
+<!--                                converter="lv.vda.register.modelConverter"-->
+<!--                                completeMethod="#{vehicleModelBean.loadVehicleModelList}"-->
+<!--                                var="vm"-->
+<!--                                itemLabel="#{vm.modelName}"-->
+<!--                                itemValue="#{vm}">-->
+
+<!--&lt;!&ndash;                    <p:ajax event="itemSelect" listener="#{vehicleModelBean.onItemSelect}" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <p:ajax event="itemSelect" update="sol" />&ndash;&gt;-->
+
+<!--                </p:autoComplete>-->
 
             </h:panelGrid>
 
-            <p:messages id="messages" showDetail="true" closable="true">
+            <p:messages id="messages" showDetail="true" closable="true" >
                 <p:autoUpdate />
             </p:messages>
 

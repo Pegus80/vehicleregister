@@ -1,19 +1,17 @@
 package lv.vda.vehicleregister.vehicle.boundary;
 
 
-import jdk.swing.interop.SwingInterOpUtils;
 import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
 
-import javax.enterprise.inject.Model;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-@Model
-@FacesConverter("lv.vda.register.converter")
-public class IDConverterBean implements Converter {
+
+@FacesConverter("lv.vda.register.modelConverter")
+public class ModelConverter implements Converter {
 
     @Inject
     private VehicleModelBean vehicleModelBean;
@@ -25,7 +23,7 @@ public class IDConverterBean implements Converter {
             return null;
         }
 
-        return vehicleModelBean.LoadVehicleModelByID(Long.valueOf(s));
+        return vehicleModelBean.loadVehicleModelByID(Long.valueOf(s));
     }
 
 
