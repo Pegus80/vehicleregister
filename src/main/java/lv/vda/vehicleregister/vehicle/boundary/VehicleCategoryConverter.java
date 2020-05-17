@@ -1,6 +1,6 @@
 package lv.vda.vehicleregister.vehicle.boundary;
 
-
+import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
 
 import javax.faces.component.UIComponent;
@@ -9,12 +9,11 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-
-@FacesConverter("lv.vda.register.modelConverter")
-public class ModelConverter implements Converter {
+@FacesConverter("lv.vda.register.categoryConverter")
+public class VehicleCategoryConverter implements Converter {
 
     @Inject
-    private VehicleModelBean vehicleModelBean;
+    private VehicleCategoryBean vehicleCategoryBean;
 
 
     @Override
@@ -22,17 +21,16 @@ public class ModelConverter implements Converter {
         if (s == null || s.isEmpty()) {
             return null;
         }
-
-        return vehicleModelBean.loadVehicleModelByID(Long.valueOf(s));
+        return vehicleCategoryBean.loadVehicleCategoryByID(Long.valueOf(s));
     }
 
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        if (!(o instanceof VehicleModelEntity)) {
+        if (!(o instanceof VehicleCategoryEntity)) {
             return null;
         }
 
-        return String.valueOf(((VehicleModelEntity) o).getId());
+        return String.valueOf(((VehicleCategoryEntity) o).getId());
     }
 }

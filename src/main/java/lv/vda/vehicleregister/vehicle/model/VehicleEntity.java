@@ -4,6 +4,7 @@ package lv.vda.vehicleregister.vehicle.model;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 
@@ -23,8 +24,8 @@ public class VehicleEntity implements Serializable {
     private int manufactureYear;
 
     @ManyToOne
-    @NotBlank
-    @JoinColumn(name = "vehicleModel_id")
+    @NotNull
+    @JoinColumn(name = "vehicleModel_id", nullable = false)
     private VehicleModelEntity vehicleModelEntity;
 
 

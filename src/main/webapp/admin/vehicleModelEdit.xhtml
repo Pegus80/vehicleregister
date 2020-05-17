@@ -1,0 +1,233 @@
+<!--
+  ~ Copyright (c) 2020 Dimitrijs Fedotovs
+  ~ This code is licensed under MIT license
+  ~ (see LICENSE.txt for details)
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <h:outputStylesheet library="css" name="primeflex.css"/>
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+
+    <title>Ritošā sastāva reģistrs</title>
+<!--    <ui:composition template="/templates/main.xhtml"/>-->
+
+
+</h:head>
+<!--<ui:composition template="/templates/main.xhtml"/>-->
+
+<h:form id="mainForm">
+
+    <div class="p-grid">
+
+        <div class="p-col-2">
+            <p:commandButton value="Saglabāt izmaiņas" id="saveButtonStructure"
+                             update="mainForm"
+                             action="#{vehicleModelBean.save}"
+                             icon="pi pi-save"
+                             style="margin :3px; width: 100%"
+                             styleClass="ui-priority-primary">
+            </p:commandButton>
+            <br/>
+            <p:commandButton value="Dzēst modeli" id="deleteModel"
+                             update="mainForm"
+                             action="#{vehicleModelBean.deleteVehicleModel()}"
+                             icon="pi pi-trash"
+                             style="margin : 3px; width: 100%"
+                             styleClass="ui-priority-primary">
+                <p:confirm header="Apstiprinājums" message="Vai Jūs tiešām vēlaties dzēst modeli
+                #{vehicleModelBean.selectedVehicleModel.modelName}?" icon="pi pi-exclamation-triangle"/>
+            </p:commandButton>
+            <br/>
+
+
+            <p:commandButton value="Mainīt modeļa datus" id="saveButtonValue"
+                             onclick="PF('dlg1').show();"
+                             icon="pi pi-pencil"
+                             style="margin :3px; width: 100%"
+                             styleClass="ui-priority-primary">
+            </p:commandButton>
+
+
+
+            <p:dialog header="Modeļa izmaiņas" widgetVar="dlg1" modal="true" dynamic="true" >
+                <p:outputLabel for="inputTextDialog"  value="Modeļa vērtība:"/>
+                <p:inputText id="inputTextDialog"  style=" width: 100%"
+                             value="#{vehicleModelBean.selectedVehicleModel.modelName}"/>
+                <br/>
+                <p:outputLabel for="inputTextDialog2"  value="Veida vērtība:"/>
+                <p:inputText id="inputTextDialog2"  style=" width: 100%"
+                             value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.typeName}"/>
+                <br/>
+                <p:outputLabel for="inputTextDialog3"  value="Kategorijas vērtība:"/>
+                <p:inputText id="inputTextDialog3"  style=" width: 100%"
+                             value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity.categoryName}"/>
+
+
+                <p:commandButton value="Saglabāt izmaiņas" id="saveButtonStructure2"
+                                 action="#{vehicleModelBean.save}"
+                                 icon="pi pi-save"
+                                 style="margin :3px; float:right; margin-top: 20px">
+                </p:commandButton>
+
+            </p:dialog>
+
+
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Jā" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                <p:commandButton value="Nē" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+            </p:confirmDialog>
+
+
+        </div>
+        <div class="p-col-10">
+            <div class="p-grid">
+                <div class="p-col-2">
+                    <div class="box">
+
+                        <p:outputLabel for="listBox1" value="Ritekļu medeļi:" style="font-weight:bold"/>
+                        <p:selectOneListbox id="listBox1" value="#{vehicleModelBean.selectedVehicleModel}"
+                                            scrollHeight="250"
+                                            converter="lv.vda.register.modelConverter" var="listBox"
+                                            filter="true" filterMatchMode="contains">
+
+                            <f:selectItems value="#{vehicleModelBean.vehicleModelList}"
+                                           var="selectItem"
+                                           itemLabel="#{selectItem.modelName}"
+                                           itemValue="#{selectItem}"/>
+                            <p:column>
+                                <h:outputText value="#{listBox.modelName}"/>
+                            </p:column>
+
+
+
+                            <p:ajax event="change" listener="#{vehicleModelBean.loadVehicleModelListByType()}"/>
+                            <p:ajax event="change" listener="#{vehicleTypeBean.loadVehicleTypeListByCategory()}"/>
+                            <p:ajax event="change" update="mainForm"/>
+
+                        </p:selectOneListbox>
+
+                        <p:outputLabel for="inputText"  value="Modeļa vērtība:"/>
+                        <p:inputText id="inputText"  style=" width: 100%"
+                                     value="#{vehicleModelBean.selectedVehicleModel.modelName}"/>
+
+
+                    </div>
+                </div>
+
+                <div class="p-col-2">
+                    <div class="box">
+
+                        <p:outputLabel for="listBox2" value="Ritekļa veids:" style="font-weight:bold"/>
+                        <p:selectOneListbox id="listBox2"
+                                            value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity}"
+                                            scrollHeight="250"
+                                            converter="lv.vda.register.typeConverter" var="listBox"
+                                            filter="true" filterMatchMode="contains">
+
+                            <f:selectItems value="#{vehicleTypeBean.vehicleTypeList}"
+                                           var="selectItem"
+                                           itemLabel="#{selectItem.typeName}"
+                                           itemValue="#{selectItem}"/>
+                            <p:column>
+                                <h:outputText value="#{listBox.typeName}"/>
+                            </p:column>
+
+                            <p:ajax event="change" listener="#{vehicleModelBean.loadVehicleModelListByType()}"/>
+                            <p:ajax event="change" update="mainForm"/>
+
+                        </p:selectOneListbox>
+
+                        <p:outputLabel for="inputText2"  value="Veida vērtība:"/>
+                        <p:inputText id="inputText2"  style=" width: 100%"
+                                     value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.typeName}"/>
+
+                    </div>
+                </div>
+
+                <div class="p-col-2">
+                    <div class="box">
+
+                        <p:outputLabel for="listBox3" value="Ritekļa kategorija:" style="font-weight:bold"/>
+                        <p:selectOneListbox id="listBox3"
+                                            value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity}"
+                                            scrollHeight="250"
+                                            converter="lv.vda.register.categoryConverter" var="listBox"
+                                            filter="true" filterMatchMode="contains">
+
+                            <f:selectItems value="#{vehicleCategoryBean.vehicleCategoryList}"
+                                           var="selectItem"
+                                           itemLabel="#{selectItem.categoryName}"
+                                           itemValue="#{selectItem}"/>
+                            <p:column>
+                                <h:outputText value="#{listBox.categoryName}"/>
+                            </p:column>
+
+                            <p:ajax event="change" listener="#{vehicleTypeBean.loadVehicleTypeListByCategory()}"/>
+                            <p:ajax event="change" update="mainForm"/>
+
+                        </p:selectOneListbox>
+
+                        <p:outputLabel for="inputText3"  value="Kategorijas vērtība:"/>
+                        <p:inputText id="inputText3"  style=" width: 100%"
+                                     value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity.categoryName}"/>
+
+                    </div>
+                </div>
+            </div>
+
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <div class="p-grid" style="margin-top: 20px">
+                <div class="p-col-6">
+                    <p:outputLabel for="modelsTable"
+                                   style="font-weight:bold"
+                                   value="Ritekļu modeļi pēc veida #{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.typeName}"/>
+
+                    <p:dataTable id="modelsTable" var="model" value="#{vehicleModelBean.vehicleModelListByType}">
+                        <p:column headerText="Modelis">
+                            <h:outputText value="#{model.modelName}"/>
+                        </p:column>
+
+                        <p:column headerText="Veids">
+                            <h:outputText value="#{model.vehicleTypeEntity.typeName}"/>
+                        </p:column>
+
+                        <p:column headerText="Kategorija">
+                            <h:outputText value="#{model.vehicleTypeEntity.vehicleCategoryEntity.categoryName}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+
+            <div class="p-grid" style="margin-top: 20px">
+                <div class="p-col-6">
+                    <p:outputLabel for="categoryTabels"
+                                   style="font-weight:bold"
+                                   value="Ritekļu veidi pēc kategorijas #{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity.categoryName}"/>
+
+                    <p:dataTable id="categoryTabels" var="type" value="#{vehicleTypeBean.vehicleTypeListByCategory}">
+                        <p:column headerText="Veids">
+                            <h:outputText value="#{type.typeName}"/>
+                        </p:column>
+
+                        <p:column headerText="Kategorija">
+                            <h:outputText value="#{type.vehicleCategoryEntity.categoryName}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</h:form>
+
+</html>

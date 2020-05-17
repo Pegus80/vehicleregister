@@ -17,10 +17,10 @@
                 <li><h:link value="User space" outcome="/app/index.xhtml"/></li>
             </ui:fragment>
             <ui:fragment rendered="#{request.isUserInRole('MANAGER')}">
-                <li><h:link value="Ritošā sastāva modeļi" outcome="/manage/vehicleModels.xhtml"/></li>
+
             </ui:fragment>
             <ui:fragment rendered="#{request.isUserInRole('ADMIN')}">
-                <li><h:link value="Admin space" outcome="/admin/index.xhtml"/></li>
+                <li><h:link value="Ritošā sastāva modeļi" outcome="/admin/vehicleModelEdit.xhtml"/></li>
             </ui:fragment>
             <ui:fragment rendered="#{empty currentUserBean.user}">
                 <li><h:link value="Login" outcome="/app/index.xhtml"/></li>

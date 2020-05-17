@@ -11,10 +11,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Named
@@ -23,10 +20,15 @@ public class VehicleModelBean implements Serializable {
 
     @Inject
     private VehicleDAO vehicleDAO;
+    @Inject
+    private VehicleTypeBean vehicleTypeBean;
+    @Inject
+    private VehicleCategoryBean vehicleCategoryBean;
+
     private List<VehicleModelEntity> vehicleModelList ;
+    private List<VehicleModelEntity> vehicleModelListByType ;
 
     private VehicleModelEntity selectedVehicleModel;
-
 
     @PostConstruct
     public void init() {
@@ -35,20 +37,24 @@ public class VehicleModelBean implements Serializable {
 
 
     public VehicleModelEntity getSelectedVehicleModel() {
-//        selectedVehicleModel =  vehicleModelList.get(1);
+        if (!(selectedVehicleModel== null) )
+        {System.out.println("Get: " +  selectedVehicleModel.getModelName());}
+
         return selectedVehicleModel;
     }
 
 
     public void setSelectedVehicleModel(VehicleModelEntity selectedVehicleModel) {
-   //             PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:","Selected model is " + selectedVehicleModel.getModelName());
+        if (!(selectedVehicleModel== null) )
+        {System.out.println("Set: " +  selectedVehicleModel.getModelName());}
+
         this.selectedVehicleModel = selectedVehicleModel;
     }
 
-
-    public List<VehicleModelEntity> loadVehicleModelList(String query) {
-        return vehicleModelList;
-    }
+    ////For ComboBox (Autocomplete)
+//    public List<VehicleModelEntity> loadVehicleModelList (String query) {
+//        return vehicleModelList;
+//    }
 
     public List<VehicleModelEntity> getVehicleModelList() {
         return vehicleModelList;
@@ -62,11 +68,43 @@ public class VehicleModelBean implements Serializable {
         return vehicleDAO.selectVehicleModelByID(id);
     }
 
-    public void onItemSelect(SelectEvent event) {
-        selectedVehicleModel = (VehicleModelEntity) event.getObject();
+    public void deleteVehicleModel(){
+        var modelName = selectedVehicleModel.getModelName();
+        vehicleDAO.deleteVehicleModel(selectedVehicleModel);
+        reloadAllLists();
+        selectedVehicleModel = null;
 
+        PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
+                "Modelis " +modelName+ " tika dzēsts! ");
     }
 
 
 
+    public void save() {
+        System.out.println("Save: " +  selectedVehicleModel.getModelName());
+
+
+        vehicleDAO.updateVehicleModel(selectedVehicleModel);
+        PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
+                "Modeļa " +selectedVehicleModel.getModelName()+ " izmaiņas ir saglabātas! ");
+
+        reloadAllLists();
+    }
+
+
+    public void reloadAllLists() {
+        init();
+        vehicleTypeBean.init();
+        vehicleCategoryBean.init();
+
+    }
+
+    public void loadVehicleModelListByType() {
+        vehicleModelListByType = vehicleDAO.selectVehicleModelsByType(selectedVehicleModel.getVehicleTypeEntity());
+
+    }
+
+    public List<VehicleModelEntity> getVehicleModelListByType() {
+        return vehicleModelListByType;
+    }
 }
