@@ -4,6 +4,7 @@ import lv.vda.vehicleregister.other.PrimeFacesMessage;
 import lv.vda.vehicleregister.vehicle.control.VehicleDAO;
 import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
+import lv.vda.vehicleregister.vehicle.model.VehicleTypeEntity;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,11 +23,11 @@ public class VehicleCategoryBean implements Serializable {
     private VehicleDAO vehicleDAO;
     private List<VehicleCategoryEntity> vehicleCategoryList ;
 
-
     @PostConstruct
     public void init() {
         vehicleCategoryList = vehicleDAO.selectAllVehicleCategories();
     }
+
 
     public VehicleCategoryEntity loadVehicleCategoryByID(Long id) {
         return vehicleDAO.selectVehicleCategoryByID(id);
@@ -41,5 +42,9 @@ public class VehicleCategoryBean implements Serializable {
     }
 
 
+    //For ComboBox (Autocomplete)
+    public List<VehicleCategoryEntity> loadVehicleCategoryList (String query) {
+        return vehicleCategoryList;
+    }
 
 }

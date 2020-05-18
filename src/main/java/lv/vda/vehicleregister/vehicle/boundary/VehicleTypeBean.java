@@ -5,7 +5,6 @@ import lv.vda.vehicleregister.vehicle.control.VehicleDAO;
 import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleTypeEntity;
-import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -13,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -24,9 +24,10 @@ public class VehicleTypeBean implements Serializable {
     private VehicleDAO vehicleDAO;
     @Inject
     private VehicleModelBean vehicleModelBean;
+
     private List<VehicleTypeEntity> vehicleTypeList ;
     private List<VehicleTypeEntity> vehicleTypeListByCategory;
-
+    private VehicleTypeEntity newVehicleType;
 
 
 
@@ -54,9 +55,42 @@ public class VehicleTypeBean implements Serializable {
     }
 
     public void loadVehicleTypeListByCategory() {
-        vehicleTypeListByCategory = vehicleDAO.selectVehicleTypesByCategory(vehicleModelBean.getSelectedVehicleModel()
-                        .getVehicleTypeEntity()
-                        .getVehicleCategoryEntity());
+        vehicleTypeListByCategory = vehicleDAO.selectVehicleTypesByCategory(vehicleModelBean.
+                getSelectedVehicleModel().
+                getVehicleTypeEntity().
+                getVehicleCategoryEntity());
+    }
+
+
+    //For ComboBox (Autocomplete)
+    public List<VehicleTypeEntity> loadVehicleTypeList (String query) {
+        return vehicleTypeList;
+    }
+
+
+    public VehicleTypeEntity getNewVehicleType() {
+        if (newVehicleType == null) {
+            newVehicleType = new VehicleTypeEntity();
+            newVehicleType.setVehicleCategoryEntity(new VehicleCategoryEntity());
+        }
+        return newVehicleType;
+    }
+
+    public void setNewVehicleType(VehicleTypeEntity newVehicleType) {
+        this.newVehicleType = newVehicleType;
+    }
+
+    public void addNewVehicleType() {
+        try {
+            vehicleDAO.createVehicleType(newVehicleType);
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
+                    "Veids " + newVehicleType.getTypeName(), PrimeFacesMessage.MessageTexType.ADDTEXT);
+        } catch (Exception e) {
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+                    "", PrimeFacesMessage.MessageTexType.ERRORTEXT);}
+
+        newVehicleType = null;
+        vehicleModelBean.reloadAllLists();
     }
 }
 

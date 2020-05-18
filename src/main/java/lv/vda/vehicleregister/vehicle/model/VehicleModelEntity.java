@@ -18,7 +18,7 @@ public class VehicleModelEntity implements Serializable {
     @Column(length = 100, nullable = false, unique = true)
     private String modelName;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @NotNull
     @JoinColumn(name = "vehicleType_id", nullable = false)
     private VehicleTypeEntity vehicleTypeEntity;

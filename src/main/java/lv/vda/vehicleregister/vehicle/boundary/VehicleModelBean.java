@@ -2,7 +2,9 @@ package lv.vda.vehicleregister.vehicle.boundary;
 
 import lv.vda.vehicleregister.other.PrimeFacesMessage;
 import lv.vda.vehicleregister.vehicle.control.VehicleDAO;
+import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
+import lv.vda.vehicleregister.vehicle.model.VehicleTypeEntity;
 import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;
@@ -25,36 +27,27 @@ public class VehicleModelBean implements Serializable {
     @Inject
     private VehicleCategoryBean vehicleCategoryBean;
 
-    private List<VehicleModelEntity> vehicleModelList ;
-    private List<VehicleModelEntity> vehicleModelListByType ;
+    private List<VehicleModelEntity> vehicleModelList;
+    private List<VehicleModelEntity> vehicleModelListByType;
 
     private VehicleModelEntity selectedVehicleModel;
+
+    private VehicleModelEntity newVehicleModel;
 
     @PostConstruct
     public void init() {
         vehicleModelList = vehicleDAO.selectAllVehicleModels();
     }
 
-
     public VehicleModelEntity getSelectedVehicleModel() {
-        if (!(selectedVehicleModel== null) )
-        {System.out.println("Get: " +  selectedVehicleModel.getModelName());}
-
         return selectedVehicleModel;
     }
 
 
     public void setSelectedVehicleModel(VehicleModelEntity selectedVehicleModel) {
-        if (!(selectedVehicleModel== null) )
-        {System.out.println("Set: " +  selectedVehicleModel.getModelName());}
-
         this.selectedVehicleModel = selectedVehicleModel;
     }
 
-    ////For ComboBox (Autocomplete)
-//    public List<VehicleModelEntity> loadVehicleModelList (String query) {
-//        return vehicleModelList;
-//    }
 
     public List<VehicleModelEntity> getVehicleModelList() {
         return vehicleModelList;
@@ -68,28 +61,57 @@ public class VehicleModelBean implements Serializable {
         return vehicleDAO.selectVehicleModelByID(id);
     }
 
-    public void deleteVehicleModel(){
+
+    public void reloadSelectedVehicleModel() {
+        selectedVehicleModel = vehicleDAO.selectVehicleModelByID(selectedVehicleModel.getId());
+    }
+
+    public void deleteVehicleModel() {
         var modelName = selectedVehicleModel.getModelName();
-        vehicleDAO.deleteVehicleModel(selectedVehicleModel);
-        reloadAllLists();
+
+        try {
+            vehicleDAO.deleteVehicleModel(selectedVehicleModel);
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
+                    "Modelis " + modelName, PrimeFacesMessage.MessageTexType.DELETETEXT);
+        } catch (Exception e) {
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);
+        }
+
         selectedVehicleModel = null;
+        reloadAllLists();
 
-        PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
-                "Modelis " +modelName+ " tika dzēsts! ");
     }
 
 
+    public void saveVehicleModelChanges() {
+        try {
+            vehicleDAO.updateVehicleModel(selectedVehicleModel);
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
+                    "Modelis " + selectedVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.UPDATETEXT);
 
-    public void save() {
-        System.out.println("Save: " +  selectedVehicleModel.getModelName());
-
-
-        vehicleDAO.updateVehicleModel(selectedVehicleModel);
-        PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
-                "Modeļa " +selectedVehicleModel.getModelName()+ " izmaiņas ir saglabātas! ");
+        } catch (Exception e) {
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
 
         reloadAllLists();
     }
+
+    public void addNewVehicleModel() {
+        try {
+            vehicleDAO.createVehicleModel(newVehicleModel);
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
+                    "Modelis " + newVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.ADDTEXT);
+        } catch (Exception e) {
+            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
+
+
+        selectedVehicleModel = newVehicleModel;
+        newVehicleModel=null;
+        reloadAllLists();
+    }
+
 
 
     public void reloadAllLists() {
@@ -101,10 +123,23 @@ public class VehicleModelBean implements Serializable {
 
     public void loadVehicleModelListByType() {
         vehicleModelListByType = vehicleDAO.selectVehicleModelsByType(selectedVehicleModel.getVehicleTypeEntity());
-
     }
 
     public List<VehicleModelEntity> getVehicleModelListByType() {
         return vehicleModelListByType;
+    }
+
+
+    public VehicleModelEntity getNewVehicleModel() {
+        if (newVehicleModel == null) {
+            newVehicleModel = new VehicleModelEntity();
+            newVehicleModel.setVehicleTypeEntity(new VehicleTypeEntity());
+        }
+
+        return newVehicleModel;
+    }
+
+    public void setNewVehicleModel(VehicleModelEntity newVehicleModel) {
+        this.newVehicleModel = newVehicleModel;
     }
 }

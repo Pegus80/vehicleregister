@@ -9,11 +9,12 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Model;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.SQLException;
 import java.util.List;
 
 
 @Stateless
-public class VehicleDAO {
+public class VehicleDAO  {
 
 
     @PersistenceContext
@@ -81,15 +82,14 @@ public class VehicleDAO {
         em.remove(em.merge(vehicleModelEntity));
     }
 
-    public void deleteVehicleType(VehicleTypeEntity vehicleTypeEntity) {
-        em.remove(em.merge(vehicleTypeEntity));
+
+    public void createVehicleModel(VehicleModelEntity vehicleModelEntity) {
+        em.persist(vehicleModelEntity);
     }
 
-    public void deleteVehicleCategory(VehicleCategoryEntity vehicleCategoryEntity) {
-        em.remove(em.merge(vehicleCategoryEntity));
+    public void createVehicleType(VehicleTypeEntity vehicleTypeEntity) {
+        em.persist(vehicleTypeEntity);
     }
-
-
 }
 
 
