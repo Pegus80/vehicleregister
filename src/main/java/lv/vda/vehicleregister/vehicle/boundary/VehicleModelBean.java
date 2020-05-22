@@ -70,10 +70,10 @@ public class VehicleModelBean implements Serializable {
         try {
             vehicleDAO.deleteVehicleModel(selectedVehicleModel);
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.DELETETEXT);
+                    null, modelName, PrimeFacesMessage.MessageTexType.DELETETEXT);
         } catch (Exception e) {
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);
+                    null, modelName, PrimeFacesMessage.MessageTexType.ERRORDELETETEXT);
         }
 
         selectedVehicleModel = null;
@@ -86,11 +86,11 @@ public class VehicleModelBean implements Serializable {
         try {
             vehicleDAO.updateVehicleModel(selectedVehicleModel);
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.UPDATETEXT);
+                    null, selectedVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.UPDATETEXT);
 
         } catch (Exception e) {
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
+                    null, selectedVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.ERRORUPDATETEXT);}
 
         reloadAllLists();
     }
@@ -100,10 +100,10 @@ public class VehicleModelBean implements Serializable {
             vehicleDAO.createVehicleModel(newVehicleModel);
             selectedVehicleModel = newVehicleModel;
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.ADDTEXT);
+                    null, newVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.ADDTEXT);
         } catch (Exception e) {
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
+                    null,  newVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.ERRORADDTEXT);}
 
 
         newVehicleModel=null;

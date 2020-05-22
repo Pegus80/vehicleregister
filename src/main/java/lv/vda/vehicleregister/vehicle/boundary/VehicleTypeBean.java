@@ -82,10 +82,10 @@ public class VehicleTypeBean implements Serializable {
         try {
             vehicleDAO.createVehicleType(newVehicleType);
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.ADDTEXT);
+                    null, newVehicleType.getTypeName(), PrimeFacesMessage.MessageTexType.ADDTEXT);
         } catch (Exception e) {
             PrimeFacesMessage.showMessage(null, null,
-                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
+                    null, newVehicleType.getTypeName(), PrimeFacesMessage.MessageTexType.ERRORADDTEXT);}
 
         newVehicleType = null;
         vehicleModelBean.reloadAllLists();
