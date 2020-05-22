@@ -1,13 +1,9 @@
 package lv.vda.vehicleregister.vehicle.boundary;
 
-import lv.vda.vehicleregister.other.PrimeFacesMessage;
 import lv.vda.vehicleregister.vehicle.control.VehicleDAO;
 import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
-import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
-import lv.vda.vehicleregister.vehicle.model.VehicleTypeEntity;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

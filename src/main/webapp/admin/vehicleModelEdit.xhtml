@@ -13,10 +13,8 @@
     <h:outputStylesheet library="css" name="primeflex.css"/>
     <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
 
-    <title>Ritošā sastāva reģistrs</title>
+    <title>Ritošā sastāva modeļi</title>
     <!--    <ui:composition template="/templates/main.xhtml"/>-->
-
-
 </h:head>
 <!--<ui:composition template="/templates/main.xhtml"/>-->
 
@@ -89,7 +87,7 @@
                 <div class="p-col-2">
                     <div class="box">
 
-                        <p:outputLabel for="listBox1" value="Ritekļu modeļi:" style="font-weight:bold"/>
+                        <p:outputLabel for="@next" value="Ritekļu modeļi:" style="font-weight:bold"/>
                         <p:selectOneListbox id="listBox1" value="#{vehicleModelBean.selectedVehicleModel}"
                                             scrollHeight="250"
                                             converter="lv.vda.register.modelConverter" var="listBox"
@@ -116,7 +114,7 @@
                 <div class="p-col-2">
                     <div class="box">
 
-                        <p:outputLabel for="listBox2" value="Ritekļa veids:" style="font-weight:bold"/>
+                        <p:outputLabel for="@next" value="Ritekļa veids:" style="font-weight:bold"/>
                         <p:selectOneListbox id="listBox2"
                                             value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity}"
                                             scrollHeight="250"
@@ -143,7 +141,7 @@
                 <div class="p-col-2">
                     <div class="box">
 
-                        <p:outputLabel for="listBox3" value="Ritekļa kategorija:" style="font-weight:bold"/>
+                        <p:outputLabel for="@next" value="Ritekļa kategorija:" style="font-weight:bold"/>
                         <p:selectOneListbox id="listBox3"
                                             value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity}"
                                             scrollHeight="250"
@@ -167,18 +165,18 @@
                 </div>
             </div>
 
-            <p:messages id="messages" showDetail="true" closable="true">
+            <p:messages showDetail="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
 
             <div class="p-grid" style="margin-top: 20px">
                 <div class="p-col-6">
-                    <p:outputLabel for="modelsTable"
+                    <p:outputLabel for="@next"
                                    style="font-weight:bold"
                                    value="Ritekļu modeļi pēc veida:
                                    #{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.typeName}"/>
 
-                    <p:dataTable id="modelsTable" var="model" style="margin-top: 20px"
+                    <p:dataTable id="modelsTable" var="model"
                                  value="#{vehicleModelBean.vehicleModelListByType}">
                         <p:column headerText="Modelis">
                             <h:outputText value="#{model.modelName}"/>
@@ -197,13 +195,13 @@
 
             <div class="p-grid" style="margin-top: 20px">
                 <div class="p-col-6">
-                    <p:outputLabel for="categoryTabels"
+                    <p:outputLabel for="@next"
                                    style="font-weight:bold"
                                    value="Ritekļu veidi pēc kategorijas:
                                    #{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity.categoryName}"/>
 
 
-                    <p:dataTable id="categoryTabels" var="type" style="margin-top: 20px"
+                    <p:dataTable id="categoryTabels" var="type"
                                  value="#{vehicleTypeBean.vehicleTypeListByCategory}">
                         <p:column headerText="Veids">
                             <h:outputText value="#{type.typeName}"/>
@@ -222,17 +220,23 @@
 
 
 <h:form id="dialogEditModelForm">
-    <p:dialog header="Modeļa izmaiņas" widgetVar="dlg1" modal="true" dynamic="true">
-        <p:outputLabel for="inputTextDialog" value="Modeļa vērtība:"/>
+
+    <p:dialog header="Modeļa izmaiņas" widgetVar="dlg1" modal="true" dynamic="true" width="20%">
+
+
+        <p:outputLabel for="@next" value="Modeļa vērtība:"/>
         <p:inputText id="inputTextDialog" style=" width: 100%"
+                     required="true"
                      value="#{vehicleModelBean.selectedVehicleModel.modelName}"/>
-        <br/>
-        <p:outputLabel for="inputTextDialog2" value="Veida vērtība:"/>
-        <p:inputText id="inputTextDialog2" style=" width: 100%"
+
+        <p:outputLabel for="@next" value="Veida vērtība:"/>
+        <p:inputText id="inputTextDialog2" style=" width: 100%;"
+                     required="true"
                      value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.typeName}"/>
-        <br/>
-        <p:outputLabel for="inputTextDialog3" value="Kategorijas vērtība:"/>
+
+        <p:outputLabel for="@next" value="Kategorijas vērtība:"/>
         <p:inputText id="inputTextDialog3" style=" width: 100%"
+                     required="true"
                      value="#{vehicleModelBean.selectedVehicleModel.vehicleTypeEntity.vehicleCategoryEntity.categoryName}"/>
 
 
@@ -241,8 +245,9 @@
                          icon="pi pi-save"
                          update="mainForm"
                          onclick="PF('dlg1').hide();"
-                         style="margin :3px; float:right; margin-top: 20px">
+                         style="float:right; margin-top: 20px">
         </p:commandButton>
+
 
     </p:dialog>
 </h:form>
@@ -251,11 +256,12 @@
 <h:form id="dialogNewModelForm">
     <p:dialog header="Jauns modelis" widgetVar="dlg2" modal="true" dynamic="true">
         <p:panelGrid columns="2">
-            <p:outputLabel for="inputTextDialog" value="Modeļa vērtība:"/>
+            <p:outputLabel for="@next" value="Modeļa vērtība:"/>
             <p:inputText id="inputTextDialog" style=" width: 100%"
+                         required="true"
                          value="#{vehicleModelBean.newVehicleModel.modelName}"/>
 
-            <p:outputLabel for="comboBoxTypeDialog" value="Ritekļa veids:"/>
+            <p:outputLabel for="@next" value="Ritekļa veids:"/>
             <p:autoComplete id="comboBoxTypeDialog" dropdown="true"
                             value="#{vehicleModelBean.newVehicleModel.vehicleTypeEntity}"
                             converter="lv.vda.register.typeConverter"
@@ -274,7 +280,7 @@
                          icon="pi pi-save"
                          update="mainForm"
                          onclick="PF('dlg2').hide();"
-                         style="margin :3px; float:right; margin-top: 20px">
+                         style="float:right; margin-top: 20px">
         </p:commandButton>
 
     </p:dialog>
@@ -285,11 +291,12 @@
     <p:dialog header="Jauns veids" widgetVar="dlg3" modal="true" dynamic="true">
         <p:panelGrid columns="2">
 
-            <p:outputLabel for="inputTextDialog" value="Veida vērtība:"/>
+            <p:outputLabel for="@next" value="Veida vērtība:"/>
             <p:inputText id="inputTextDialog" style=" width: 100%"
+                         required="true"
                          value="#{vehicleTypeBean.newVehicleType.typeName}"/>
 
-            <p:outputLabel for="comboBoxTypeDialog" value="Ritekļa kategorija:"/>
+            <p:outputLabel for="@next" value="Ritekļa kategorija:"/>
             <p:autoComplete id="comboBoxTypeDialog" dropdown="true"
                             value="#{vehicleTypeBean.newVehicleType.vehicleCategoryEntity}"
                             converter="lv.vda.register.categoryConverter"
@@ -308,7 +315,7 @@
                          icon="pi pi-save"
                          update="mainForm"
                          onclick="PF('dlg3').hide();"
-                         style="margin :3px; float:right; margin-top: 20px">
+                         style="float:right; margin-top: 20px">
         </p:commandButton>
 
     </p:dialog>

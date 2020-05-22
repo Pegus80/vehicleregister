@@ -2,10 +2,8 @@ package lv.vda.vehicleregister.vehicle.boundary;
 
 import lv.vda.vehicleregister.other.PrimeFacesMessage;
 import lv.vda.vehicleregister.vehicle.control.VehicleDAO;
-import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleTypeEntity;
-import org.primefaces.event.SelectEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -71,10 +69,10 @@ public class VehicleModelBean implements Serializable {
 
         try {
             vehicleDAO.deleteVehicleModel(selectedVehicleModel);
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
-                    "Modelis " + modelName, PrimeFacesMessage.MessageTexType.DELETETEXT);
+            PrimeFacesMessage.showMessage(null, null,
+                    null, PrimeFacesMessage.MessageTexType.DELETETEXT);
         } catch (Exception e) {
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+            PrimeFacesMessage.showMessage(null, null,
                     null, PrimeFacesMessage.MessageTexType.ERRORTEXT);
         }
 
@@ -87,11 +85,11 @@ public class VehicleModelBean implements Serializable {
     public void saveVehicleModelChanges() {
         try {
             vehicleDAO.updateVehicleModel(selectedVehicleModel);
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
-                    "Modelis " + selectedVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.UPDATETEXT);
+            PrimeFacesMessage.showMessage(null, null,
+                    null, PrimeFacesMessage.MessageTexType.UPDATETEXT);
 
         } catch (Exception e) {
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+            PrimeFacesMessage.showMessage(null, null,
                     null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
 
         reloadAllLists();
@@ -100,14 +98,14 @@ public class VehicleModelBean implements Serializable {
     public void addNewVehicleModel() {
         try {
             vehicleDAO.createVehicleModel(newVehicleModel);
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
-                    "Modelis " + newVehicleModel.getModelName(), PrimeFacesMessage.MessageTexType.ADDTEXT);
+            selectedVehicleModel = newVehicleModel;
+            PrimeFacesMessage.showMessage(null, null,
+                    null, PrimeFacesMessage.MessageTexType.ADDTEXT);
         } catch (Exception e) {
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
+            PrimeFacesMessage.showMessage(null, null,
                     null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
 
 
-        selectedVehicleModel = newVehicleModel;
         newVehicleModel=null;
         reloadAllLists();
     }

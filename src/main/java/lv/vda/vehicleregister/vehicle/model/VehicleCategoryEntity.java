@@ -14,7 +14,7 @@ public class VehicleCategoryEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Ritekļa kategorija nevar būt tuša!")
     @Column(length = 100, nullable = false, unique = true)
     private String categoryName;
 

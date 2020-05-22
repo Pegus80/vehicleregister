@@ -3,7 +3,6 @@ package lv.vda.vehicleregister.vehicle.boundary;
 import lv.vda.vehicleregister.other.PrimeFacesMessage;
 import lv.vda.vehicleregister.vehicle.control.VehicleDAO;
 import lv.vda.vehicleregister.vehicle.model.VehicleCategoryEntity;
-import lv.vda.vehicleregister.vehicle.model.VehicleModelEntity;
 import lv.vda.vehicleregister.vehicle.model.VehicleTypeEntity;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +11,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -83,11 +81,11 @@ public class VehicleTypeBean implements Serializable {
     public void addNewVehicleType() {
         try {
             vehicleDAO.createVehicleType(newVehicleType);
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_INFO, "Info:",
-                    "Veids " + newVehicleType.getTypeName(), PrimeFacesMessage.MessageTexType.ADDTEXT);
+            PrimeFacesMessage.showMessage(null, null,
+                    null, PrimeFacesMessage.MessageTexType.ADDTEXT);
         } catch (Exception e) {
-            PrimeFacesMessage.showMessage(FacesMessage.SEVERITY_ERROR, "Kļūda:",
-                    "", PrimeFacesMessage.MessageTexType.ERRORTEXT);}
+            PrimeFacesMessage.showMessage(null, null,
+                    null, PrimeFacesMessage.MessageTexType.ERRORTEXT);}
 
         newVehicleType = null;
         vehicleModelBean.reloadAllLists();

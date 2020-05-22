@@ -14,7 +14,7 @@ public class VehicleModelEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Ritekļa modelis nevar būt tušs!")
     @Column(length = 100, nullable = false, unique = true)
     private String modelName;
 

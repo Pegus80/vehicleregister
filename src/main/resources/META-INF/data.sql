@@ -42,5 +42,10 @@ insert into VehicleModels (id, vehicleType_id, modelName) values (-9,-5,'31-638'
 
 
 
-
-
+insert into Countries (id, countryName) values (-1, 'Latvija')
+insert into Countries (id, countryName) values (-2, 'Francija')
+insert into Countries (id, countryName) values (-3, 'Ukraina')
+insert into Countries (id, countryName) values (-4, 'Saūda Arābija')
+insert into Countries (id, countryName) values (-5, 'Jemena')
+insert into Countries (id, countryName) values (-6, 'Kamerūna')
+insert into Countries (id, countryName) values (-7, 'Dānija')

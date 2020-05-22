@@ -17,7 +17,7 @@
                 <li><h:link value="User space" outcome="/app/index.xhtml"/></li>
             </ui:fragment>
             <ui:fragment rendered="#{request.isUserInRole('MANAGER')}">
-
+                <li><h:link value="Reģistrēt uzņēmumu" outcome="/manage/companyRegistration.xhtml"/></li>
             </ui:fragment>
             <ui:fragment rendered="#{request.isUserInRole('ADMIN')}">
                 <li><h:link value="Ritošā sastāva modeļi" outcome="/admin/vehicleModelEdit.xhtml"/></li>
